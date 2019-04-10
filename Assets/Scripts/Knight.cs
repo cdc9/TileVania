@@ -16,15 +16,11 @@ public class Knight : MonoBehaviour
     [SerializeField] LayerMask whatIsEnemies;
     [SerializeField] float attackRange;
     [SerializeField] int damage;
+    private bool isFacingRight = true;
 
     //Slide code
-    [SerializeField] float slideSpeed = 10f;
-    private float slideTime = 0f;
-    public float startSlideTime = 1f;
     [SerializeField] BoxCollider2D slidingBoxCollider2D;
-
-    //New slide code
-    private Vector2 boostSpeed = new Vector2(10, 0);
+    [SerializeField] float boostSpeed = 10f;
     private bool canBoost = true;
     private float boostCooldown = 2f;
 
@@ -48,7 +44,6 @@ public class Knight : MonoBehaviour
         myFeetCollider2D = GetComponent<BoxCollider2D>();
 
         gravityScaleAtStart = myRigidbody.gravityScale;
-        //slideTime = startSlideTime;
     }
 
     // Update is called once per frame
@@ -57,13 +52,13 @@ public class Knight : MonoBehaviour
         if (!isAlive) { return; }
 
         Run();
-        //Jump();
+        Jump();
         FlipSprite();
         ClimbLadder();
         Attack();
         Crouching();
-        //Slide();
         Dash();
+        CastSpell();
         Die();
 
         if (myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
@@ -74,13 +69,13 @@ public class Knight : MonoBehaviour
     }
     private void Run()
     { 
-        /*  
-        if (myAnimator.GetBool("isCrouching") == true)
+          
+        if (myAnimator.GetBool("isCrouching") == true && myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             myRigidbody.velocity = new Vector2(0f, 0f);
             return;
         }
-        */
+        
         //NOTE: Go to project settings -> Input -> gravity to adjust how quickly the value of GetAxis drops to zero after letting go. Value 3 makes it feel slippery/laggy. Value 10 Stops almost immediately. Alternitively, user GetAxisRaw for -1,0,1 values. 
         float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal"); //value is between -1 and +1 
         Vector2 playerVelocity = new Vector2(controlThrow * runSpeed, myRigidbody.velocity.y); // vector2(x,y) where x is horizontal movement, and y is whatever the current y movement the player is going right now. if you put 0, player would stop all y axis movement
@@ -143,6 +138,12 @@ public class Knight : MonoBehaviour
         {
             // reverse the current scaling if the x axis
             transform.localScale = new Vector2(Mathf.Sign(myRigidbody.velocity.x), 1f);
+            //Determine if the player should face left or right. This is checking if the player's velocity is positive or negative. 
+            if ((Mathf.Sign(myRigidbody.velocity.x) > Mathf.Epsilon))
+                isFacingRight = true;
+            else if ((Mathf.Sign(myRigidbody.velocity.x) < Mathf.Epsilon))
+                isFacingRight = false;
+            Debug.Log(isFacingRight);
         }
     }
 
@@ -192,11 +193,12 @@ public class Knight : MonoBehaviour
 
         //Allow the player to crouch
         float crouchingValue = CrossPlatformInputManager.GetAxis("Vertical"); //value is between -1 and +1
-        //bool crouchAbs = Mathf.Abs(crouchingValue) > Mathf.Epsilon;
-        if (crouchingValue < 0f)
+        //The joystick needs to be at least 75% pointing down to register as a crouch. If it was 0f, the player would crouch if they weren't 100% horizontal. 
+        if (crouchingValue < -0.75f)
         {
             
             myAnimator.SetBool("isCrouching", true);
+            myAnimator.SetBool("isRunning", false);
 
         }
         else
@@ -204,54 +206,13 @@ public class Knight : MonoBehaviour
             myAnimator.SetBool("isCrouching", false);
         }
     }
-
-    private void Slide()
-    {
-        //Check to see if the player touching the ground or not first
-        if (!myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
-        {
-            myAnimator.SetBool("isOnGround", false);
-            return;
-        }
-        
-        //Allow the player to jump
-        if (CrossPlatformInputManager.GetButtonDown("Jump") && (myAnimator.GetBool("isCrouching") == true))
-        {
-            
-            if (slideTime <= 0)
-            {
-                slideTime = startSlideTime;
-                myRigidbody.velocity = Vector2.zero;
-                myAnimator.SetBool("isSliding", false);
-            }
-            else
-            {
-
-                Debug.Log("Slide now!!");
-                myAnimator.SetBool("isSliding", true);
-                while (slideTime > 0)
-                {
-                    slideTime -= Time.deltaTime;
-                    Vector2 slideVelocityToAdd = new Vector2(slideSpeed, 0f);
-                    myRigidbody.velocity += slideVelocityToAdd;
-                    //myRigidbody.velocity = new Vector2(slideSpeed, myRigidbody.velocity.y);
-                }
-            }
-
-                /*
-                Vector2 slideVelocityToAdd = new Vector2(slideSpeed, 0f);
-                myRigidbody.velocity += slideVelocityToAdd;
-                myAnimator.SetTrigger("Sliding");
-                */
-        }
-        
-    }
     
+    //A slide move like in the OG megaman
     private void Dash()
     {
         if (CrossPlatformInputManager.GetButtonDown("Jump") && (myAnimator.GetBool("isCrouching") == true))
         {
-            StartCoroutine(Boost(0.2f)); //Start the Coroutine called "Boost", and feed it the time we want it to boost us
+            StartCoroutine(Boost(0.4f)); //Start the Coroutine called "Boost", and feed it the time we want it to boost us
         }
     }
     IEnumerator Boost(float boostDur) //Coroutine with a single input of a float called boostDur, which we can feed a number when calling
@@ -260,14 +221,37 @@ public class Knight : MonoBehaviour
         float timeLength = 0; //create float to store the time this coroutine is operating
         canBoost = false; //set canBoost to false so that we can't keep boosting while boosting
 
-        while (boostDur > timeLength) //we call this loop every frame while our custom boostDuration is a higher value than the "time" variable in this coroutine
+        
+        if(isFacingRight)
         {
-            timeLength += Time.deltaTime; //Increase our "time" variable by the amount of time that it has been since the last update
-            myRigidbody.velocity = boostSpeed; //set our rigidbody velocity to a custom velocity every frame, so that we get a steady boost direction like in Megaman
-            yield return 0; //go to next frame
+            while (boostDur > timeLength) //we call this loop every frame while our custom boostDuration is a higher value than the "time" variable in this coroutine
+            {
+                timeLength += Time.deltaTime; //Increase our "time" variable by the amount of time that it has been since the last update
+                myRigidbody.velocity = new Vector2(boostSpeed, 0); //set our rigidbody velocity to a custom velocity every frame, so that we get a steady boost direction like in Megaman
+                yield return 0; //go to next frame
+            }
         }
+        else
+        {
+            while (boostDur > timeLength) //we call this loop every frame while our custom boostDuration is a higher value than the "time" variable in this coroutine
+            {
+                timeLength += Time.deltaTime; //Increase our "time" variable by the amount of time that it has been since the last update
+                myRigidbody.velocity = new Vector2(-boostSpeed, 0); //set our rigidbody velocity to a custom velocity every frame, so that we get a steady boost direction like in Megaman
+                yield return 0; //go to next frame
+            }
+        }
+        
+        myAnimator.SetBool("isSliding", false);
         yield return new WaitForSeconds(boostCooldown); //Cooldown time for being able to boost again, if you'd like.
         canBoost = true; //set back to true so that we can boost again.
-        myAnimator.SetBool("isSliding", false);
+        
+    }
+
+    private void CastSpell()
+    {
+        if(CrossPlatformInputManager.GetButtonDown("Fire2"))
+        {
+            myAnimator.SetTrigger("Casting");
+        }
     }
 }
