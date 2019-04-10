@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public int health;
-    //public GameObject bloodEffect;
+    [SerializeField] GameObject bloodEffect;
     //public Animator camAnim;
 
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        //Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        Instantiate(bloodEffect, transform.position, Quaternion.identity);
         health -= damage;
         Debug.Log("damage TAKEN");
     }

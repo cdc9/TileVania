@@ -60,14 +60,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Coordinate Brush\Scripts\Editor\CoordinateBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\GameObject Brush\Scripts\Editor\GameObjectBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Line Brush\Scripts\Editor\LineBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Prefab Brush\Scripts\Editor\PrefabBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Random Brush\Scripts\Editor\RandomBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Tint Brush Smooth\Scripts\Editor\TintBrushSmooth.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Brushes\Tint Brush\Scripts\Editor\TintBrush.cs" />
-    <Compile Include="Assets\2d-extras-master\Assets\Tilemap\Tiles\Rule Tile\Scripts\Editor\RuleTileEditor.cs" />
+    <Compile Include="Assets\JMO Assets\Cartoon FX Easy Editor\Editor\CFXEasyEditor.cs" />
+    <Reference Include="Cinemachine">
+      <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -76,6 +72,9 @@
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
@@ -331,6 +330,9 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="JMOAssets_CartoonFXFreeWelcome">
+      <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Assets/JMO Assets/Editor/JMOAssets_CartoonFXFreeWelcome.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>C:/Users/Chris Cruz/Documents/Repos/Unity/TileVania/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
@@ -709,6 +711,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{46457532-8567-F529-E572-DA38204421F5}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{E1DDCD11-7E0A-5FDA-26BF-C84E8DE927E2}</Project>
       <Name>Assembly-CSharp</Name>
