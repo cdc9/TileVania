@@ -16,13 +16,17 @@ public class Knight : MonoBehaviour
     [SerializeField] LayerMask whatIsEnemies;
     [SerializeField] float attackRange;
     [SerializeField] int damage;
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
 
     //Slide code
     [SerializeField] BoxCollider2D slidingBoxCollider2D;
     [SerializeField] float boostSpeed = 10f;
     private bool canBoost = true;
     private float boostCooldown = 2f;
+
+    //Shoot code
+    public GameObject projectile, gun;
+    private GameObject projectileParent;
 
 
     //State
@@ -44,6 +48,15 @@ public class Knight : MonoBehaviour
         myFeetCollider2D = GetComponent<BoxCollider2D>();
 
         gravityScaleAtStart = myRigidbody.gravityScale;
+
+
+        //Creates a parent if necessary
+        projectileParent = GameObject.Find("Projectiles");
+
+        if (!projectileParent)
+        {
+            projectileParent = new GameObject("Projectiles");
+        }
     }
 
     // Update is called once per frame
@@ -253,5 +266,15 @@ public class Knight : MonoBehaviour
         {
             myAnimator.SetTrigger("Casting");
         }
+    }
+
+    private void FireSpell()
+    {
+        //Create a bullet based on whatever "projectile" the gameObject has assigned
+        GameObject newProjectile = Instantiate(projectile) as GameObject;
+        //Set the spawn location to the location of the parent
+        newProjectile.transform.parent = projectileParent.transform;
+        //Spawn the bullet in the parent's gun location
+        newProjectile.transform.position = gun.transform.position;
     }
 }
