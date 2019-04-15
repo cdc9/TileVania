@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     //Configs
     public float bulletSpeed;
     public int damage = 3;
+    private bool isKnightFacingRight;
 
     //Components 
     Rigidbody2D myRigidbody;
@@ -22,9 +23,10 @@ public class Projectile : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myBoxCollider = GetComponent<BoxCollider2D>();
         knight = FindObjectOfType<Knight>();
+        isKnightFacingRight = knight.isFacingRight;
 
         //Determine when direction the projectile should be facing when it first appears
-        if (knight.isFacingRight)
+        if (isKnightFacingRight)
         {
             // reverse the current scaling if the x axis
             transform.localScale = new Vector2(1f, 1f);
@@ -57,7 +59,7 @@ public class Projectile : MonoBehaviour
     //Move projectile and determine with direction it should be flying in
     private void Fly()
     {
-        if(knight.isFacingRight)
+        if(isKnightFacingRight)
         {
             myRigidbody.velocity = new Vector2(bulletSpeed, myRigidbody.velocity.y);
         }
