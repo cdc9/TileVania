@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
     Rigidbody2D myRigidbody;
     BoxCollider2D myBoxCollider;
     Knight knight;
+    CameraShaker cameraShaker;
     [SerializeField] GameObject explosionEffect;
 
 
@@ -23,6 +24,7 @@ public class Projectile : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myBoxCollider = GetComponent<BoxCollider2D>();
         knight = FindObjectOfType<Knight>();
+        cameraShaker = FindObjectOfType<CameraShaker>();
         isKnightFacingRight = knight.isFacingRight;
 
         //Determine when direction the projectile should be facing when it first appears
@@ -49,6 +51,10 @@ public class Projectile : MonoBehaviour
     {
         //Trigger the explosion effect after colliding with something
         Instantiate(explosionEffect, transform.position, Quaternion.identity);
+
+        //Shake the screen if it hits something
+        cameraShaker.canShake = true;
+
         //If it hits an enemy, damage it
         if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
             collision.GetComponent<Enemy>().TakeDamage(damage);
