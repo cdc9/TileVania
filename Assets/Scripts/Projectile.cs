@@ -31,12 +31,12 @@ public class Projectile : MonoBehaviour
         if (isKnightFacingRight)
         {
             // reverse the current scaling if the x axis
-            transform.localScale = new Vector2(1f, 1f);
+            transform.localScale = new Vector2(-1f, 1f);
         }
         else
         {
             // reverse the current scaling if the x axis
-            transform.localScale = new Vector2(-1f, 1f);
+            transform.localScale = new Vector2(1f, 1f);
         }
     }
 

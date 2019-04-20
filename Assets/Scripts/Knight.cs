@@ -23,6 +23,7 @@ public class Knight : MonoBehaviour
     [SerializeField] float boostSpeed = 10f;
     private bool canBoost = true;
     private float boostCooldown = 2f;
+    public GameObject dashEffect, dashEffectPos;
 
     //Shoot code
     public GameObject projectile, gun;
@@ -145,9 +146,14 @@ public class Knight : MonoBehaviour
 
     private void FlipSprite()
     {
+        //Code to prevent the player turning in the middle of a slide
+        bool isSliding;
+        isSliding = myAnimator.GetBool("isSliding");
+
         //If the player is moving horizontally
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
-        if (playerHasHorizontalSpeed)
+        //Determine which way the player should face depending on his +/- x speed. As well as check to see if he's sliding
+        if (playerHasHorizontalSpeed && isSliding == false)
         {
             // reverse the current scaling if the x axis
             transform.localScale = new Vector2(Mathf.Sign(myRigidbody.velocity.x), 1f);
@@ -156,7 +162,6 @@ public class Knight : MonoBehaviour
                 isFacingRight = true;
             else if ((Mathf.Sign(myRigidbody.velocity.x) < Mathf.Epsilon))
                 isFacingRight = false;
-            Debug.Log(isFacingRight);
         }
     }
 
@@ -184,12 +189,13 @@ public class Knight : MonoBehaviour
         }
     }
 
+    //Used to the draw a circle in unity to let you know how big your attack range is
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
-
+    //If any enemies are overlapping the circle hitbox, deal damage to them.
     private void DealDamage()
     {
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
@@ -225,6 +231,14 @@ public class Knight : MonoBehaviour
     {
         if (CrossPlatformInputManager.GetButtonDown("Jump") && (myAnimator.GetBool("isCrouching") == true))
         {
+            //Create a dash effect
+            GameObject dash = Instantiate(dashEffect) as GameObject;
+            //Set the spawn location to the location of the parent
+            dash.transform.parent = projectileParent.transform;
+            //Spawn the dash effect in the parent's dashPos location
+            dash.transform.position = dashEffectPos.transform.position;
+
+
             StartCoroutine(Boost(0.4f)); //Start the Coroutine called "Boost", and feed it the time we want it to boost us
         }
     }
