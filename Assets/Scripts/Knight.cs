@@ -38,15 +38,20 @@ public class Knight : MonoBehaviour
     Animator myAnimator;
     CapsuleCollider2D myBodyCollider2D;
     BoxCollider2D myFeetCollider2D;
+    Health playerHealth;
     float gravityScaleAtStart;
 
     // Messages then methods
     void Start()
     {
+        //DontDestroyOnLoad(playerHealth);
+
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider2D = GetComponent<CapsuleCollider2D>();
         myFeetCollider2D = GetComponent<BoxCollider2D>();
+        playerHealth = GetComponent<Health>();
+
 
         gravityScaleAtStart = myRigidbody.gravityScale;
 
@@ -69,11 +74,14 @@ public class Knight : MonoBehaviour
         Jump();
         FlipSprite();
         ClimbLadder();
+
+        //Knight Code
         Attack();
         Crouching();
         Dash();
         CastSpell();
-        Die();
+        Hurt();
+        //Die();
 
         if (myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
@@ -166,6 +174,32 @@ public class Knight : MonoBehaviour
     }
 
     //If the player is touching either an enemy or a hazard, call die method and change player sprite
+    private void Hurt()
+    {
+        if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        {
+            myRigidbody.velocity = deathKick;
+            playerHealth.health -= 1;
+            if(playerHealth.health <= 0)
+            {
+                Die();
+            }
+
+            //myAnimator.SetTrigger("Dying");
+        }
+
+    }
+
+    //If the player is touching either an enemy or a hazard, call die method and change player sprite
+    private void Die()
+    {
+            isAlive = false;
+            myAnimator.SetTrigger("Dying");
+            FindObjectOfType<GameSession>().ProcessPlayerDeath();
+    }
+    /*
+    //Original Code
+    //If the player is touching either an enemy or a hazard, call die method and change player sprite
     private void Die()
     {
         if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
@@ -177,7 +211,7 @@ public class Knight : MonoBehaviour
         }
 
     }
-
+    */
     //Knight Code
 
     private void Attack()
