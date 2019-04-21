@@ -17,6 +17,7 @@ public class Knight : MonoBehaviour
     [SerializeField] float attackRange;
     [SerializeField] int damage;
     public bool isFacingRight = true;
+    [SerializeField] float hurtCooldown = 2f;
 
     //Slide code
     [SerializeField] BoxCollider2D slidingBoxCollider2D;
@@ -176,8 +177,15 @@ public class Knight : MonoBehaviour
     //If the player is touching either an enemy or a hazard, call die method and change player sprite
     private void Hurt()
     {
-        if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        hurtCooldown -= Time.deltaTime;
+        if(hurtCooldown < 0)
         {
+            hurtCooldown = 0;
+        }
+        Debug.Log(hurtCooldown);
+        if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) && hurtCooldown <= 0f)
+        {
+            hurtCooldown = 1f;
             myRigidbody.velocity = deathKick;
             playerHealth.health -= 1;
             if(playerHealth.health <= 0)
@@ -189,7 +197,6 @@ public class Knight : MonoBehaviour
         }
 
     }
-
     //If the player is touching either an enemy or a hazard, call die method and change player sprite
     private void Die()
     {
