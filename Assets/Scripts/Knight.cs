@@ -10,14 +10,21 @@ public class Knight : MonoBehaviour
     [SerializeField] float jumpSpeed = 10f;
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] Vector2 deathKick = new Vector2(25, 25);
+    public bool isFacingRight = true;
 
     //Knight Code
+
+    //Attack code
     [SerializeField] Transform attackPos;
     [SerializeField] LayerMask whatIsEnemies;
     [SerializeField] float attackRange;
     [SerializeField] int damage;
-    public bool isFacingRight = true;
+
+
+    //Hurt code
+    [SerializeField] float bounceSpeed = 1f;
     [SerializeField] float hurtCooldown = 2f;
+
 
     //Slide code
     [SerializeField] BoxCollider2D slidingBoxCollider2D;
@@ -45,8 +52,6 @@ public class Knight : MonoBehaviour
     // Messages then methods
     void Start()
     {
-        //DontDestroyOnLoad(playerHealth);
-
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider2D = GetComponent<CapsuleCollider2D>();
@@ -82,7 +87,6 @@ public class Knight : MonoBehaviour
         Dash();
         CastSpell();
         Hurt();
-        //Die();
 
         if (myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
@@ -177,48 +181,67 @@ public class Knight : MonoBehaviour
     //If the player is touching either an enemy or a hazard, call die method and change player sprite
     private void Hurt()
     {
+        //This is the amount of time that needs to pass before the player can take damage again
         hurtCooldown -= Time.deltaTime;
         if(hurtCooldown < 0)
         {
             hurtCooldown = 0;
         }
-        Debug.Log(hurtCooldown);
+        //If player collides with an enemy or hazard and the hurt cooldown is 0
         if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) && hurtCooldown <= 0f)
         {
-            hurtCooldown = 1f;
-            myRigidbody.velocity = deathKick;
+            hurtCooldown = 1f; //Set the time they can't get hurt again
+            StartCoroutine(HurtBounce(0.2f)); //Code to push the player back after taking a hit
             playerHealth.health -= 1;
             if(playerHealth.health <= 0)
             {
                 Die();
             }
 
-            //myAnimator.SetTrigger("Dying");
         }
 
     }
-    //If the player is touching either an enemy or a hazard, call die method and change player sprite
-    private void Die()
+
+    IEnumerator HurtBounce(float bounceDur) //Coroutine with a single input of a float called boostDur, which we can feed a number when calling
     {
-            isAlive = false;
-            myAnimator.SetTrigger("Dying");
-            FindObjectOfType<GameSession>().ProcessPlayerDeath();
-    }
-    /*
-    //Original Code
-    //If the player is touching either an enemy or a hazard, call die method and change player sprite
-    private void Die()
-    {
-        if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        myAnimator.SetTrigger("TakeDamage");
+        float timeLength = 0; //create float to store the time this coroutine is operating
+        isAlive = false; //Make it so player can't move while flying back
+        //canBoost = false; //set canBoost to false so that we can't keep boosting while boosting
+
+
+        if (isFacingRight)
         {
-            myRigidbody.velocity = deathKick;
+            while (bounceDur > timeLength) //we call this loop every frame while our custom boostDuration is a higher value than the "time" variable in this coroutine
+            {
+                timeLength += Time.deltaTime; //Increase our "time" variable by the amount of time that it has been since the last update
+                myRigidbody.velocity = new Vector2(-bounceSpeed, 0); //set our rigidbody velocity to a custom velocity every frame, so that we get a steady boost direction like in Megaman
+                yield return 0; //go to next frame
+            }
+        }
+        else
+        {
+            while (bounceDur > timeLength) //we call this loop every frame while our custom boostDuration is a higher value than the "time" variable in this coroutine
+            {
+                timeLength += Time.deltaTime; //Increase our "time" variable by the amount of time that it has been since the last update
+                myRigidbody.velocity = new Vector2(bounceSpeed, 0); //set our rigidbody velocity to a custom velocity every frame, so that we get a steady boost direction like in Megaman
+                yield return 0; //go to next frame
+            }
+        }
+
+        //myAnimator.SetBool("isSliding", false);
+        isAlive = true; //Allow player to move again
+        yield return 0; //Cooldown time for being able to boost again, if you'd like.
+        //canBoost = true; //set back to true so that we can boost again.
+
+    }
+    //If the player is touching either an enemy or a hazard, call die method and change player sprite
+    private void Die()
+    {
             isAlive = false;
             myAnimator.SetTrigger("Dying");
             FindObjectOfType<GameSession>().ProcessPlayerDeath();
-        }
-
     }
-    */
     //Knight Code
 
     private void Attack()
