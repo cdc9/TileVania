@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478857643855861091}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.13, y: -0.499, z: -0.21875}
+  m_LocalPosition: {x: 1.289, y: -0.658, z: -0.21875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5478857645077922102}
@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 5478857643915224240}
   - component: {fileID: 5478857643915224255}
   - component: {fileID: 5478857643915224254}
+  - component: {fileID: 5478857643666682746}
   m_Layer: 10
   m_Name: Knight Player
   m_TagString: Untagged
@@ -216,13 +217,15 @@ MonoBehaviour:
   jumpSpeed: 17
   climbSpeed: 5
   deathKick: {x: 25, y: 25}
+  isFacingRight: 1
   attackPos: {fileID: 5478857643855861092}
   whatIsEnemies:
     serializedVersion: 2
     m_Bits: 4096
   attackRange: 0.5
   damage: 1
-  isFacingRight: 1
+  bounceSpeed: 3
+  hurtCooldown: 0
   slidingBoxCollider2D: {fileID: 0}
   boostSpeed: 10
   dashEffect: {fileID: 8007187068367998017, guid: 1fec878826978794ca579c5d08f5f6c9,
@@ -231,6 +234,11 @@ MonoBehaviour:
   projectile: {fileID: 4943223414000532732, guid: bbaedefb867fcdd499a06a7383d1b7ec,
     type: 3}
   gun: {fileID: 5478857645066215443}
+  playerMana: {fileID: 0}
+  jumpSFX: {fileID: 8300000, guid: 803e5b30269251c40ab75d6aedd1cb51, type: 3}
+  swingSwordSFX: {fileID: 0}
+  slideSFX: {fileID: 0}
+  swordHitSFX: {fileID: 0}
 --- !u!114 &5478857643915224254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,8 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1513e733c9c7acf4aa3ebdff4244a1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
-  numOfHearts: 3
+  health: 4
+  numOfHearts: 4
   hearts:
   - {fileID: 0}
   - {fileID: 0}
@@ -254,6 +262,32 @@ MonoBehaviour:
   FullHeart: {fileID: 21300000, guid: a5d24d93297733441b7645badad3aa02, type: 3}
   HalfHeart: {fileID: 21300002, guid: a5d24d93297733441b7645badad3aa02, type: 3}
   EmptyHeart: {fileID: 21300004, guid: a5d24d93297733441b7645badad3aa02, type: 3}
+--- !u!114 &5478857643666682746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478857643915224253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6194f72d5ab3b464d8d257cc2d0e2a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mana: 4
+  numOfBlueHearts: 4
+  timeToRegenMana: 5
+  blueHearts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  BlueFullHeart: {fileID: 21300000, guid: d3447bad01c2b154d9f7e31749db615f, type: 3}
+  BlueHalfHeart: {fileID: 21300002, guid: d3447bad01c2b154d9f7e31749db615f, type: 3}
+  BlueEmptyHeart: {fileID: 21300004, guid: d3447bad01c2b154d9f7e31749db615f, type: 3}
+  halfHeartBool: 0
+  halfHeartSeen: 0
 --- !u!1 &5478857644136804376
 GameObject:
   m_ObjectHideFlags: 0

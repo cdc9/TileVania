@@ -36,6 +36,13 @@ public class Knight : MonoBehaviour
     //Shoot code
     public GameObject projectile, gun;
     private GameObject projectileParent;
+    public Mana playerMana;
+
+    //Audio Code
+    public AudioClip jumpSFX;
+    public AudioClip swingSwordSFX;
+    public AudioClip slideSFX;
+    public AudioClip swordHitSFX;
 
 
     //State
@@ -57,6 +64,7 @@ public class Knight : MonoBehaviour
         myBodyCollider2D = GetComponent<CapsuleCollider2D>();
         myFeetCollider2D = GetComponent<BoxCollider2D>();
         playerHealth = GetComponent<Health>();
+        playerMana = GetComponent<Mana>();
 
 
         gravityScaleAtStart = myRigidbody.gravityScale;
@@ -190,7 +198,7 @@ public class Knight : MonoBehaviour
         //If player collides with an enemy or hazard and the hurt cooldown is 0
         if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) && hurtCooldown <= 0f)
         {
-            hurtCooldown = 1f; //Set the time they can't get hurt again
+            hurtCooldown = .2f; //Set the time they can't get hurt again
             StartCoroutine(HurtBounce(0.2f)); //Code to push the player back after taking a hit
             playerHealth.health -= 1;
             if(playerHealth.health <= 0)
@@ -340,7 +348,7 @@ public class Knight : MonoBehaviour
 
     private void CastSpell()
     {
-        if(CrossPlatformInputManager.GetButtonDown("Fire2"))
+        if (CrossPlatformInputManager.GetButtonDown("Fire2") && playerMana.mana > 0)
         {
             myAnimator.SetTrigger("Casting");
         }
@@ -354,5 +362,7 @@ public class Knight : MonoBehaviour
         newProjectile.transform.parent = projectileParent.transform;
         //Spawn the bullet in the parent's gun location
         newProjectile.transform.position = gun.transform.position;
+
+        playerMana.mana -= 1;
     }
 }
