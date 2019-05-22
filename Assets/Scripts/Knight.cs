@@ -43,6 +43,7 @@ public class Knight : MonoBehaviour
     public AudioClip swingSwordSFX;
     public AudioClip slideSFX;
     public AudioClip swordHitSFX;
+    public AudioClip castFireSpellSFX;
 
 
     //State
@@ -258,6 +259,8 @@ public class Knight : MonoBehaviour
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
             myAnimator.SetTrigger("Attacking");
+            AudioSource.PlayClipAtPoint(swingSwordSFX, Camera.main.transform.position);
+            
         }
     }
 
@@ -271,9 +274,11 @@ public class Knight : MonoBehaviour
     private void DealDamage()
     {
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
-        for (int i = 0; i < enemiesToDamage.Length; i++)
+        for (int i = 1; i < enemiesToDamage.Length; i++)
         {
             enemiesToDamage[i].GetComponent<Enemy>().TakeDamage(damage);
+            AudioSource.PlayClipAtPoint(swordHitSFX, Camera.main.transform.position);
+            Debug.Log("Enemy hit!");
         }
     }
 
@@ -351,6 +356,7 @@ public class Knight : MonoBehaviour
         if (CrossPlatformInputManager.GetButtonDown("Fire2") && playerMana.mana > 0)
         {
             myAnimator.SetTrigger("Casting");
+            AudioSource.PlayClipAtPoint(castFireSpellSFX, Camera.main.transform.position);
         }
     }
 

@@ -15427,7 +15427,7 @@ GameObject:
   - component: {fileID: 1964235625}
   m_Layer: 8
   m_Name: Foreground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17987,6 +17987,16 @@ PrefabInstance:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 1289460538}
+    - target: {fileID: 996150722960070697, guid: 04246e13cf6710f4c9ae3863c231c064,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.542856
+      objectReference: {fileID: 0}
+    - target: {fileID: 996150722960070697, guid: 04246e13cf6710f4c9ae3863c231c064,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5622334
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04246e13cf6710f4c9ae3863c231c064, type: 3}
 --- !u!1001 &5215901403518182055
@@ -18125,5 +18135,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5478857643915224255, guid: 9323ed45dae06864580ab607704a1e3b,
+        type: 3}
+      propertyPath: swingSwordSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 37b3a398dfe6c0a4984357e18e5fadc7, type: 3}
+    - target: {fileID: 5478857643915224255, guid: 9323ed45dae06864580ab607704a1e3b,
+        type: 3}
+      propertyPath: swordHitSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 78d29cc70c024ff47b75bcd06b87ee16, type: 3}
+    - target: {fileID: 5478857643915224255, guid: 9323ed45dae06864580ab607704a1e3b,
+        type: 3}
+      propertyPath: castFireSpellSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: bba6b8e3c0a48484cada51a196935197, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9323ed45dae06864580ab607704a1e3b, type: 3}
