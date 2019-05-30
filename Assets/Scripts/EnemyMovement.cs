@@ -14,6 +14,7 @@ public class EnemyMovement : MonoBehaviour
     // Cached component references
     Rigidbody2D myRigidBody;
     BoxCollider2D myBoxCollider;
+    CapsuleCollider2D myCapsuleCollider;
     Enemy enemy;
 
     // Messages then method
@@ -22,6 +23,7 @@ public class EnemyMovement : MonoBehaviour
     {
         myRigidBody = GetComponent<Rigidbody2D>();
         myBoxCollider = GetComponent<BoxCollider2D>();
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
         enemy = GetComponent<Enemy>();
     }
 
@@ -46,17 +48,19 @@ public class EnemyMovement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         //if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
-        if (collision.tag == "Ground")  
+        if (collision.tag == "Ground")
+        {
             transform.localScale = new Vector2(-(Mathf.Sign(myRigidBody.velocity.x)), 1f);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player")) && enemy.playerHitMe == false)
+        if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Player")) && enemy.playerHitMe == false)
         {
             transform.localScale = new Vector2(-(Mathf.Sign(myRigidBody.velocity.x)), 1f);
         }
-        if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player")) && enemy.playerHitMe == true)
+        if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Player")) && enemy.playerHitMe == true)
         {
             enemy.playerHitMe = false;
         }

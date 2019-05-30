@@ -120,7 +120,6 @@ public class Knight : MonoBehaviour
         //Determine if the player''s running animation should be playing. If velocity is 0, stop running.
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
-        //Check to see if the player is touching the ground
 
     }
 
@@ -274,7 +273,7 @@ public class Knight : MonoBehaviour
     private void DealDamage()
     {
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
-        for (int i = 1; i < enemiesToDamage.Length; i++)
+        for (int i = 0; i < enemiesToDamage.Length; i++)
         {
             enemiesToDamage[i].GetComponent<Enemy>().TakeDamage(damage);
             AudioSource.PlayClipAtPoint(swordHitSFX, Camera.main.transform.position);

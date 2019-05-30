@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     // Cached component references
     Rigidbody2D myRigidBody;
     BoxCollider2D myBoxCollider;
+    CapsuleCollider2D myCapsuleCollider;
 
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myBoxCollider = GetComponent<BoxCollider2D>();
         enemyMovement = GetComponent<EnemyMovement>();
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
 
     }
 
@@ -39,17 +41,18 @@ public class Enemy : MonoBehaviour
         {
             hurtCooldown = 0;
             enemyMovement.moveSpeed = 3f;
+            playerHitMe = false;
         }
     }
 
     public void TakeDamage(int damage)
     {
-        Instantiate(bloodEffect, transform.position, Quaternion.identity);
-        health -= damage;
-        playerHitMe = true;
         if (hurtCooldown <= 0)
         {
-            hurtCooldown = .5f;
+            Instantiate(bloodEffect, transform.position, Quaternion.identity);
+            playerHitMe = true;
+            health -= damage;
+            hurtCooldown = .25f;
             enemyMovement.moveSpeed = 0f;
         }
         

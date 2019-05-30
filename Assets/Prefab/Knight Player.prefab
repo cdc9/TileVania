@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478857643855861091}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.289, y: -0.658, z: -0.21875}
+  m_LocalPosition: {x: 1.112, y: -0.658, z: -0.21875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5478857645077922102}
@@ -222,7 +222,7 @@ MonoBehaviour:
   whatIsEnemies:
     serializedVersion: 2
     m_Bits: 4096
-  attackRange: 0.5
+  attackRange: 0.65
   damage: 1
   bounceSpeed: 3
   hurtCooldown: 0
@@ -236,9 +236,10 @@ MonoBehaviour:
   gun: {fileID: 5478857645066215443}
   playerMana: {fileID: 0}
   jumpSFX: {fileID: 8300000, guid: 803e5b30269251c40ab75d6aedd1cb51, type: 3}
-  swingSwordSFX: {fileID: 0}
+  swingSwordSFX: {fileID: 8300000, guid: 37b3a398dfe6c0a4984357e18e5fadc7, type: 3}
   slideSFX: {fileID: 0}
-  swordHitSFX: {fileID: 0}
+  swordHitSFX: {fileID: 8300000, guid: 78d29cc70c024ff47b75bcd06b87ee16, type: 3}
+  castFireSpellSFX: {fileID: 8300000, guid: bba6b8e3c0a48484cada51a196935197, type: 3}
 --- !u!114 &5478857643915224254
 MonoBehaviour:
   m_ObjectHideFlags: 0
