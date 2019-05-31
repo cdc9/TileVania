@@ -279,7 +279,6 @@ C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\Temp\bin\Debug\UnityEngine.T
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\obj\Debug\Assembly-CSharp-firstpass.csprojAssemblyReference.cache
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\obj\Debug\Assembly-CSharp-firstpass.csproj.CoreCompileInputs.cache
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\obj\Debug\Assembly-CSharp-firstpass.csproj.CopyComplete
 C:\Users\Chris Cruz\Documents\Repos\Unity\TileVania\obj\Debug\Assembly-CSharp-firstpass.dll
